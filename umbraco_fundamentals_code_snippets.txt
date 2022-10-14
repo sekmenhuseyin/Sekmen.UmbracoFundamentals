@@ -1,0 +1,150 @@
+Umbraco Fundamentals code snippets
+
+EXERCISE 3:
+
+---page 20, Build a basic top navigation---
+
+<nav class="nav-bar top-nav">
+    <a class="nav-link" href="/">Home</a>
+	@foreach (var child in Model.Root().Children() )
+      {
+        <a class="nav-link" href="@child.Url()">@child.Name</a>
+	}
+</nav>
+
+
+---page 21, Build a secondary navigation---
+
+<nav class="nav-bar nav-bar--list">
+	@foreach (var child in Model.AncestorOrSelf(2).Children() )
+      {
+		<a class="nav-link nav-link--black nav-link--air-bottom" 
+			href="@child.Url()">@child.Name</a>
+	}
+</nav>
+
+
+
+EXERCISE 4:
+
+---page 26, Building the news listing with razor---
+
+@{
+    Layout = "Layout.cshtml";
+    var articles = Model.Children<NewsArticle>()
+                         .OrderByDescending(x => x.CreateDate);
+}
+
+
+...
+
+
+@foreach (var article in articles)
+{
+	<a href="@article.Url()" class="article article-with-image">
+		<div class="article-info">
+
+		<div class="article-meta">
+		  <small class="article-date">@article.CreateDate</small>
+		  <small class="article-cat">
+                     @String.Join(", ", article.Categories)
+              </small>
+		</div>
+
+		<h3 class="article-title">@article.Name</h3>
+		<div class="article-excerpt">@article.Summary</div>
+
+		</div>		
+	</a>
+}
+
+
+
+EXERCISE 5:
+
+---page 35, Working with media in razor---
+
+@if (article.Image != null)
+{
+   <div class="article-image"
+               style="background-image: url('@article.Image.Url()')">
+   </div>
+}
+
+
+
+EXERCISE 6:
+
+---page 37, Render images using the Image Cropper---
+
+@if(article.Image != null)
+{
+   var cropUrl = Url.GetCropUrl(article.Image, "Grid", false);
+   <div class="article-image"
+       style="background-image: url('@cropUrl')">
+   </div>
+}
+
+
+
+EXERCISE 8:
+
+---page 47, Render the picked media items---
+
+@if (Model.HasValue("headerImages"))
+{
+
+    @Html.Partial("header")
+ 			
+}else{
+
+
+...
+
+
+
+}
+
+@RenderBody()
+
+
+
+EXERCISE 9:
+---page 52, Add html and razor to the product template---
+
+<section class="section">
+        @Html.GetGridHtml(Model, "bodyText")
+</section>
+
+
+---page 59, Render testimonials in the Product template---
+
+@{ 
+    var testimonials = Model
+                       .Testimonials
+                       .OfType<Testimonial>();
+}
+
+...
+
+<section class="section">
+   <div class="container">
+        <div class="row">
+            @Html.GetBlockListHtml(Model, "Testimonials")
+        </div>
+   </div>
+</section>
+
+
+
+---Testimonial partial view---
+
+<div class="col-sm-6 col-lg-4">
+    <div class="testimonial">
+    <div class="testimonial-image" style="background-image: url('@testimonial.Image.GetCropUrl("grid") ')"></div>             
+		<div class="testimonial-content">
+            <h3 class="testimonial-title">@testimonial.Title</h3>
+            <p class="testimonial-text no-air">@testimonial.Quote</p>
+        </div>
+    </div>
+</div>

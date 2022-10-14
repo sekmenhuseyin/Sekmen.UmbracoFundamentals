@@ -1,0 +1,30 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.ProductArea>
+@using ContentModels = Umbraco.Web.PublishedModels;
+@{
+	Layout = "childPage.cshtml";
+	var products = Model.Children<Product>()
+                         .OrderByDescending(x => x.CreateDate);
+}
+
+
+<!-- Product section -->
+<section class="section section--sand">
+
+	<div class="container">
+		<div class="row">
+			<h2>Our products</h2>
+			<div class="product-grid">
+				
+				@foreach (var product in products)
+                {
+                	<a href="@product.Url" class="article article-with-image">
+                	   <div class="article-info">
+                		  <h3 class="article-title">@product.Name</h3>
+                	     </div>	
+                	 </a>
+                }
+			</div>
+		</div>
+	</div>
+</section>
+<!-- product section end -->		

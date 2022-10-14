@@ -1,0 +1,21 @@
+<section class="section">               
+  <div class="container">
+     <div class="row">
+
+    @foreach (var testimonial2 in testimonials2)
+     {
+       <div class="col-sm-6 col-lg-4">
+           <div class="testimonial">
+           <div class="testimonial-image"
+    style="background-image: url('@testimonial2.Image.MediaItem.GetCropUrl("grid") ')">
+               </div>            
+     	   <div class="testimonial-content">
+                   <h3 class="testimonial-title">@testimonial2.Title</h3>
+                   <p class="testimonial-text no-air">@testimonial2.Quote</p>
+               </div>
+           </div>
+       </div>
+       }
+     </div>
+  </div>
+</section>
